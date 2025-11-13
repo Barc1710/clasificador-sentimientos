@@ -2,12 +2,8 @@
 import { atom } from 'nanostores';
 
 // 1. Define el "átomo" que guardará la lista de resultados.
-// Empezamos con 3 ejemplos.
-export const $allResults = atom([
-    { sentiment: 'positivo', score: 0.9 },
-    { sentiment: 'negativo', score: 0.8 },
-    { sentiment: 'positivo', score: 0.95 },
-]);
+// Empezamos vacío para que las estadísticas arranquen en 0.
+export const $allResults = atom([]);
 
 // 2. Define una "acción" para añadir nuevos resultados a la lista.
 export function addResult(newResult) {
