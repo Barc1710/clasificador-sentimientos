@@ -1,0 +1,75 @@
+---
+const features = [
+  {
+    title: "Monitoreo omnicanal",
+    description:
+      "Integra menciones de redes sociales, formularios y reseñas para obtener un panorama unificado.",
+    accent: "from-emerald-400/80 to-emerald-500/40",
+  },
+  {
+    title: "Insights accionables",
+    description:
+      "Recibe alertas inteligentes cuando el sentimiento cambie de forma drástica o sostenida.",
+    accent: "from-rose-400/80 to-rose-500/40",
+  },
+  {
+    title: "Reportes instantáneos",
+    description:
+      "Genera visualizaciones listas para compartir con tu equipo en segundos.",
+    accent: "from-sky-400/80 to-sky-500/40",
+  },
+];
+---
+
+<section
+  class="relative overflow-hidden rounded-3xl border border-white/50 bg-white/80 px-6 py-12 shadow-[0_45px_80px_-45px_rgba(15,23,42,0.45)] backdrop-blur-xl sm:px-12"
+>
+  <div
+    class="absolute inset-y-0 right-0 hidden w-1/2 bg-gradient-to-l from-white/70 sm:block"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="relative mx-auto flex max-w-5xl flex-col gap-10">
+    <header class="space-y-3 text-center sm:text-left">
+      <span
+        class="inline-flex items-center gap-2 rounded-full bg-slate-900/90 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white"
+      >
+        <span class="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400"
+        ></span>
+        Capacidades clave
+      </span>
+      <h2 class="text-3xl font-semibold text-slate-900 sm:text-4xl">
+        La base estética de un dashboard premium con data real
+      </h2>
+      <p class="max-w-2xl text-base text-slate-600">
+        Combina módulos listos con componentes React interactivos sin perder la
+        armonía visual. Cada tarjeta resume lo esencial del panel para que tus
+        stakeholders se enamoren a primera vista.
+      </p>
+    </header>
+
+    <div class="grid gap-6 md:grid-cols-3">
+      {
+        features.map((feature) => (
+          <article class="group relative overflow-hidden rounded-3xl border border-white/50 bg-white/90 p-6 shadow-sm transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl">
+            <div
+              class={`absolute inset-0 bg-gradient-to-br ${feature.accent} opacity-0 transition-opacity duration-300 group-hover:opacity-100`}
+              aria-hidden="true"
+            />
+            <div class="relative space-y-4">
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900/90 text-lg font-semibold text-white shadow-lg shadow-slate-900/30">
+                ★
+              </div>
+              <h3 class="text-xl font-semibold text-slate-900">
+                {feature.title}
+              </h3>
+              <p class="text-sm leading-relaxed text-slate-600">
+                {feature.description}
+              </p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

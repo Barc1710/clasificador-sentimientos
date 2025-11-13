@@ -1,0 +1,36 @@
+---
+// src/pages/index.astro
+// Esta parte es el "cerebro" de Astro, se ejecuta en el servidor.
+
+// 1. Importamos los componentes de React que creamos.
+import { AnalysisForm } from "../components/AnalysisForm.jsx";
+import { DashboardCharts } from "../components/DashboardCharts.jsx";
+
+// Importamos el layout base de Astro (opcional pero buena práctica)
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Dashboard de Sentimientos">
+  <div class="dashboard-shell">
+    <div class="dashboard-shell__glow" aria-hidden="true"></div>
+
+    <div class="dashboard-container">
+      <header class="dashboard-hero">
+        <span class="dashboard-tag">Observatorio en tiempo real</span>
+        <h1 class="dashboard-title">
+          Clasificador de Sentimientos en Redes Sociales
+        </h1>
+      </header>
+
+      <div class="dashboard-main">
+        <aside class="dashboard-side">
+          <AnalysisForm client:load />
+        </aside>
+
+        <section class="dashboard-content">
+          <DashboardCharts client:load />
+        </section>
+      </div>
+    </div>
+  </div>
+</Layout>

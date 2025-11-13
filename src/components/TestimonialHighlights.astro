@@ -1,0 +1,72 @@
+---
+const testimonials = [
+  {
+    quote:
+      "El dashboard se convirtió en la vitrina de nuestro equipo. La claridad visual y la detección de sentimiento en vivo nos permiten priorizar sin perder tiempo.",
+    author: "Lucía Navarro",
+    role: "Directora de CX, NovaTech",
+  },
+  {
+    quote:
+      "La mezcla de estética y datos nos ayudó a presentar resultados en comité. Nadie esperaba un tablero tan cuidado y preciso.",
+    author: "Sergio Paredes",
+    role: "Analista Senior, Grupo Prisma",
+  },
+  {
+    quote:
+      "Integrar los componentes React fue inmediato. El resto del layout en Astro nos dio flexibilidad total para diseñar la narrativa visual.",
+    author: "María Fernanda León",
+    role: "UX Lead, Nimbo Labs",
+  },
+];
+---
+
+<section
+  class="relative overflow-hidden rounded-3xl border border-white/40 bg-slate-900 text-slate-100"
+>
+  <div
+    class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.25),_transparent_55%)]"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="relative px-6 py-14 sm:px-12">
+    <header class="mx-auto max-w-3xl space-y-4 text-center">
+      <span
+        class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-200"
+      >
+        Historias reales
+      </span>
+      <h2 class="text-3xl font-semibold sm:text-4xl">
+        Un diseño que enamora a los equipos
+      </h2>
+      <p class="text-sm text-slate-300 sm:text-base">
+        Construye credibilidad mostrando testimonios que realzan la experiencia
+        premium de tu dashboard.
+      </p>
+    </header>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-3">
+      {
+        testimonials.map((item) => (
+          <article class="relative h-full overflow-hidden rounded-2xl border border-white/20 bg-white/5 p-6 shadow-[0_35px_65px_-35px_rgba(15,23,42,0.8)] backdrop-blur">
+            <div
+              class="absolute right-6 top-6 text-4xl text-emerald-300/70"
+              aria-hidden="true"
+            >
+              “
+            </div>
+            <blockquote class="space-y-4 text-sm leading-relaxed text-slate-100">
+              <p>{item.quote}</p>
+              <footer class="pt-4">
+                <p class="text-sm font-semibold text-white">{item.author}</p>
+                <p class="text-xs uppercase tracking-wide text-emerald-200/80">
+                  {item.role}
+                </p>
+              </footer>
+            </blockquote>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
