@@ -18,14 +18,6 @@ const SENTIMENT_STYLES = {
     borderClass: 'border-red-300',
     accentHex: '#EF4444',
   },
-  neutro: {
-    emoji: '😐',
-    label: 'Neutro',
-    textClass: 'text-gray-600',
-    bgClass: 'bg-gray-100',
-    borderClass: 'border-gray-300',
-    accentHex: '#6B7280',
-  },
   error: {
     emoji: '⚠️',
     label: 'Error',
@@ -38,9 +30,8 @@ const SENTIMENT_STYLES = {
 
 export function SentimentResult({ data }) {
   if (!data) return null;
-  const { sentiment, score } = data;
+  const { sentiment } = data;
   const styles = SENTIMENT_STYLES[sentiment] || SENTIMENT_STYLES.error;
-  const confidencePercent = Math.round((score ?? 0) * 100);
 
   return (
     <div
@@ -66,34 +57,7 @@ export function SentimentResult({ data }) {
             )}
           </div>
         </div>
-
-        {sentiment !== 'error' && (
-          <span className={`inline-flex items-center justify-center gap-2 rounded-full bg-white/80 px-4 py-1.5 text-sm font-medium ${styles.textClass}`}>
-            <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: styles.accentHex }} />
-            {confidencePercent}% de confianza
-          </span>
-        )}
       </div>
-
-      {sentiment !== 'error' && (
-        <div className="border-t border-white/70 bg-white/70 px-6 py-4">
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between text-sm font-medium text-slate-600">
-              <span>Confianza del resultado</span>
-              <span className={`${styles.textClass}`}>{confidencePercent}%</span>
-            </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-white">
-              <div
-                className="h-full rounded-full transition-all duration-500"
-                style={{ width: `${confidencePercent}%`, backgroundColor: styles.accentHex }}
-              />
-            </div>
-            <p className="text-xs text-slate-500">
-              Este indicador combina la probabilidad devuelta por el modelo con el ajuste histórico de resultados.
-            </p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

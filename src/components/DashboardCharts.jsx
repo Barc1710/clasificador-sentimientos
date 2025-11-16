@@ -6,34 +6,37 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, LineChart, L
 
 export function DashboardCharts() {
   // 3. Se suscribe al store global.
-  // Cada vez que 'allResults' cambie, este componente se re-renderizará.
   const allResults = useStore($allResults);
 
-  // 4. El resto de la lógica es IDÉNTICA a la del plan anterior.
-  // Calcula los datos de los gráficos a partir de 'allResults'.
-
-  const totals = { positivo: 0, negativo: 0, neutro: 0 };
+  // --- MODIFICACIÓN 1: Cálculo de totales (sin 'neutro') ---
+  // Tu API solo devuelve 'positivo' y 'negativo'.
+  const totals = { positivo: 0, negativo: 0 };
   allResults.forEach((result) => {
-    if (result.sentiment in totals) {
-      totals[result.sentiment] += 1;
+    if (result.sentiment === 'positivo') {
+      totals.positivo += 1;
+    } else if (result.sentiment === 'negativo') {
+      totals.negativo += 1;
     }
   });
 
+  // --- MODIFICACIÓN 2: Datos del Gráfico de Torta (sin 'neutro') ---
   const pieData = [
     { name: 'Positivos', value: totals.positivo },
     { name: 'Negativos', value: totals.negativo },
-    { name: 'Neutros', value: totals.neutro },
   ];
-  const PIE_COLORS = { 'Positivos': '#10B981', 'Negativos': '#EF4444', 'Neutros': '#6B7280' };
+  const PIE_COLORS = { 'Positivos': '#10B981', 'Negativos': '#EF4444' };
 
   const hasResults = allResults.length > 0;
 
+  // --- MODIFICACIÓN 3: Datos del Gráfico de Líneas (basado en volumen, no score) ---
+  // Como la API no da 'score', mostramos un 1 por cada post para ver el volumen.
   const lineData = allResults.slice(-10).map((r, index) => ({
     name: `Analisis ${index + 1}`,
-    positivos: r.sentiment === 'positivo' ? r.score : 0,
-    negativos: r.sentiment === 'negativo' ? r.score : 0,
+    positivos: r.sentiment === 'positivo' ? 1 : 0,
+    negativos: r.sentiment === 'negativo' ? 1 : 0,
   }));
 
+  // --- MODIFICACIÓN 4: Tarjetas de KPI (eliminada la de 'neutro') ---
   const summaryCards = [
     {
       key: 'positivo',
@@ -53,15 +56,6 @@ export function DashboardCharts() {
       ringClass: 'ring-red-500/20',
       accentHex: '#EF4444',
     },
-    {
-      key: 'neutro',
-      label: 'Neutros',
-      value: totals.neutro,
-      description: 'Mensajes equilibrados o informativos.',
-      textClass: 'text-gray-600',
-      ringClass: 'ring-gray-500/20',
-      accentHex: '#6B7280',
-    },
   ];
 
   const chartTooltipStyle = {
@@ -79,7 +73,8 @@ export function DashboardCharts() {
 
   return (
     <div className="space-y-6">
-      <section className="grid gap-4 sm:grid-cols-3">
+      {/* --- MODIFICACIÓN 5: Grilla de KPIs (ahora 2 columnas) --- */}
+      <section className="grid gap-4 sm:grid-cols-2"> 
         {summaryCards.map((card) => {
           const percentage = hasResults ? Math.round((card.value / allResults.length) * 100) : 0;
           return (
@@ -124,7 +119,7 @@ export function DashboardCharts() {
                   </filter>
                 </defs>
                 <Pie
-                  data={pieData}
+                  data={pieData} // Ya no contiene 'Neutros'
                   dataKey="value"
                   nameKey="name"
                   cx="50%"
@@ -153,7 +148,8 @@ export function DashboardCharts() {
 
         <div className="rounded-3xl border border-white/60 bg-white/80 p-6 shadow-[0_35px_60px_-35px_rgba(15,23,42,0.45)] backdrop-blur-xl">
           <div className="flex items-center justify-between">
-            <h3 className="text-xl font-semibold text-slate-900">Últimos análisis (tendencia)</h3>
+            {/* --- MODIFICACIÓN 6: Título del gráfico --- */}
+            <h3 className="text-xl font-semibold text-slate-900">Volumen de posts (últimos 10)</h3>
             <span className="text-sm text-slate-500">Últimos 10 registros</span>
           </div>
           <div className="mt-6 h-[320px]">
@@ -161,11 +157,13 @@ export function DashboardCharts() {
               <LineChart data={lineData} margin={{ top: 10, right: 20, left: -10, bottom: 10 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
                 <XAxis dataKey="name" stroke="#94A3B8" tick={{ fill: '#64748B' }} />
-                <YAxis domain={[0, 1]} stroke="#94A3B8" tick={{ fill: '#64748B' }} />
+                {/* --- MODIFICACIÓN 7: Eje Y (para 0 y 1) --- */}
+                <YAxis domain={[0, 1]} allowDecimals={false} stroke="#94A3B8" tick={{ fill: '#64748B' }} />
                 <Tooltip contentStyle={chartTooltipStyle} />
                 <Legend iconType="circle" wrapperStyle={legendStyle} />
-                <Line type="monotone" dataKey="positivos" stroke="#10B981" strokeWidth={3} dot={false} activeDot={{ r: 6 }} name="Score positivo" />
-                <Line type="monotone" dataKey="negativos" stroke="#EF4444" strokeWidth={3} dot={false} activeDot={{ r: 6 }} name="Score negativo" />
+                {/* --- MODIFICACIÓN 8: Nombres de las líneas --- */}
+                <Line type="monotone" dataKey="positivos" stroke="#10B981" strokeWidth={3} dot={false} activeDot={{ r: 6 }} name="Post Positivo" />
+                <Line type="monotone" dataKey="negativos" stroke="#EF4444" strokeWidth={3} dot={false} activeDot={{ r: 6 }} name="Post Negativo" />
               </LineChart>
             </ResponsiveContainer>
           </div>
